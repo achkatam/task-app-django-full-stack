@@ -8,22 +8,40 @@ from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 # Employees views
-@api_view(['GET', "POST"])
+@api_view(['GET'])
 def employee_list(request):
-    if request.method == 'GET':
-        employees = Employee.objects.all()
-        serializer = EmployeeSerializer(employees, many=True)
-
+    try:
+        employee = Employee.objects.all()
+        serializer = EmployeeSerializer(employee, many=True)
         return Response(serializer.data)
+    except Exception as e:
+        return Response({'error': 'List of employees not found'},
+                        status=status.HTTP_404_NOT_FOUND)
 
-    elif request.method == 'POST':
+
+@api_view(['POST'])
+def create_employee(request):
+    try:
+        existing_employee = Employee.objects.filter(
+            email=request.data.get('email')
+        ).first()
+
+        if existing_employee:
+            return Response({'error': 'Employee with this email already exist'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
         serializer = EmployeeSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'error': 'Invalid data provided'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({'error': 'An error occurred'},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
