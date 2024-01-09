@@ -44,27 +44,44 @@ def create_employee(request):
                         status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+# get single employee by id
+@api_view(['GET'])
 def employee_details(request, pk):
-    employee = Employee.objects.get(id=pk)
-
-    if request.method == 'GET':
+    try:
+        employee = Employee.objects.get(id=pk)
         serializer = EmployeeSerializer(employee)
-
         return Response(serializer.data)
+    except Exception as e:
+        return Response({'error': f'Employee with id: {pk} does not exist.'})
 
-    elif request.method == 'PUT':
-        serializer = EmployeeSerializer(isntance=employee, data=request.data)
+
+# update employee
+@api_view(['PUT'])
+def update_employee(request, pk):
+    try:
+        employee = Employee.objects.get(id=pk)
+
+        serializer = EmployeeSerializer(instance=employee, data=request.data)
 
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({'error': f'Employee with id: {pk} does not exist.'})
 
-    elif request.method == 'DELETE':
+
+@api_view(['DELETE'])
+# delete employee
+def delete_employee(request, pk):
+    try:
+        employee = Employee.objects.get(id=pk)
         employee.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'message': f'Employee with id: {pk} successfully deleted'},
+                        status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': f'Employee with id: {pk} does not exist.'})
 
 
 # Tasks
