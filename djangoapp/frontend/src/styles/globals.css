@@ -1,27 +1,53 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* styles/global.css */
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+/* Reset some default styles for better consistency */
+body, h1, h2, h3, p, ul {
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: 'Arial', sans-serif;
 }
+
+/* Apply styles to EmployeeComponent */
+option {
+  padding: 8px;
+  margin: 4px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Apply styles to TaskComponent */
+li {
+  list-style-type: none;
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+/* Apply styles to EmployeeList */
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+select {
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Apply styles to TaskList */
+ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+/* Add more styles as needed */
